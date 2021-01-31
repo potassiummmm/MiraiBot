@@ -1,5 +1,12 @@
 import pymysql
 import datetime
+from graia.application import GraiaMiraiApplication
+from graia.application.group import Group, Member
+from graia.application.message.chain import MessageChain
+from graia.application.message.elements.internal import Plain
+from core import Instance
+
+
 from config import MYSQL_DDL_DB, MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DDL_DB, MYSQL_DDL_TABLE
 
 def addDDL(user_type:str, user_id:int, ddl_date:str, ddl_info:str):
@@ -44,4 +51,32 @@ def ddlBroadcast(memberid:int, days:int) -> str:
     result += "还剩%d天 哈哈"%days
     db.close()
     return result
+
+
+
+bcc = Instance.bcc() 
+
+@bcc.receiver("GroupMessage")
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+    if message.asDisplay().lower().startswith("ddl"):
+        msg_list = message.asDisplay().split(' ')
+        if msg_list[1] == 'add':
+            if msg_list[2] == 'g':
+                addDDL("group",group.id,msg_list[3],msg_list[4])
+            else:
+                addDDL("member",member.id,msg_list[2],msg_list[3])
+        elif msg_list[1] == 'help':
+            await app.sendGroupMessage(group, MessageChain.create([Plain("ddl+add+(g)+date+info添加ddl,g表示group")]))
+        elif msg_list[1] == 'rm':
+            if msg_list[2] == 'g':
+                deleteMemberDDL(group.id,msg_list[3])
+            else:
+                deleteMemberDDL(member.id,msg_list[2])
+        elif msg_list[1] == 'show':
+            result = ""
+            if len(msg_list) > 2 and msg_list[2] == 'g':
+                result = getMemberDDL(group.id)
+            else:
+                result = getMemberDDL(member.id)
+            await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
 

@@ -4,3 +4,6 @@ MYSQL_USER: str = ""
 MYSQL_PASSWORD: str = ""
 MYSQL_DDL_DB: str = ""
 MYSQL_DDL_TABLE: str = ""
+SETU_API_KEY: str = ""
+SETU_ENABLED_GROUPS: set = set()
+ADMIN_QQ: int = 0
