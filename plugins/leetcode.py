@@ -1,8 +1,12 @@
 import re
 import requests
 import json
-
+import asyncio
 from html import unescape
+from graia.application.message.chain import MessageChain
+from graia.application.message.elements.internal import Plain
+from graia.scheduler import crontabify
+from core import Instance
 
 
 def htmlToPlainText(html) -> str:
@@ -83,3 +87,12 @@ def getDailyQuestion():
     questionTitleSlug = dailyQuestionData["data"]["todayRecord"][0]["question"]["questionTitleSlug"]
     content = getQuestionContent(questionTitleSlug, "Zh")
     return htmlToPlainText(content)[:-1]
+
+sche = Instance.sche()
+app = Instance.app()
+
+@sche.schedule(crontabify("0 0 * * *"))
+async def leetcode_everyday_question_scheduler():
+    await asyncio.sleep(1)
+    await app.sendGroupMessage(1067920415, MessageChain.create([Plain(getDailyQuestion())]))
+

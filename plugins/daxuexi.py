@@ -1,5 +1,10 @@
 import requests
 from lxml import etree
+from graia.application.message.chain import MessageChain
+from graia.application.message.elements.internal import Plain
+from graia.scheduler.timers import every_custom_minutes
+from core import Instance
+
 
 
 def get_newest_url():
@@ -27,3 +32,20 @@ def get_title_text():
 def get_formatted_result():
     result = get_title_text() + "开始啦!还不学的都是懒狗\n" + get_newest_url()
     return result
+
+app = Instance.app()
+sche = Instance.sche() 
+
+daxuexi_newest_title = get_title_text()
+
+
+@sche.schedule(every_custom_minutes(10))
+async def daxuexi_scheduler():
+    global daxuexi_newest_title
+    if(daxuexi_newest_title != get_title_text()):
+        result = get_formatted_result()
+        daxuexi_newest_title = get_title_text
+        group_list = {855840079, 434499605, 546091207}
+        for i in group_list:
+            await app.sendGroupMessage(i, MessageChain.create([Plain(result)]))
+

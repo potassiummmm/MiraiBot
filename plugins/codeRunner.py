@@ -1,5 +1,10 @@
 import aiohttp
-import asyncio
+from graia.application import GraiaMiraiApplication
+from graia.application.group import Group, Member
+from graia.application.message.chain import MessageChain
+from graia.application.message.elements.internal import Plain
+from core import Instance
+
 
 
 async def run(languageChoice, code, input_=None, compilerArgs=None) -> str:
@@ -21,3 +26,30 @@ async def run(languageChoice, code, input_=None, compilerArgs=None) -> str:
         return data_json["Errors"][:-1]
     else:
         return data_json["Result"][:-1]
+
+
+bcc = Instance.bcc() 
+
+@bcc.receiver("GroupMessage")
+async def code_runner(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+    if message.asDisplay().lower().startswith("c++") and len(message.asDisplay()) > 4:
+        result = await run(7, message.asDisplay()[4:])
+        await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+    if message.asDisplay().lower().startswith("python") and len(message.asDisplay()) > 7:
+        result = await run(24, message.asDisplay()[7:])
+        await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+    if message.asDisplay().lower().startswith("java") and len(message.asDisplay()) > 5:
+        if message.asDisplay().lower().startswith("javascript") and len(message.asDisplay()) > 11:
+            result = await run(17, message.asDisplay()[11:])
+            await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+        else:        
+            result = await run(4, message.asDisplay()[5:])
+            await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+    if message.asDisplay().lower().startswith("nodejs") and len(message.asDisplay()) > 7:
+        result = await run(23, message.asDisplay()[7:])
+        await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+

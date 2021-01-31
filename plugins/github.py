@@ -1,5 +1,10 @@
 import requests
 import json
+from graia.application import GraiaMiraiApplication
+from graia.application.group import Group, Member
+from graia.application.message.chain import MessageChain
+from graia.application.message.elements.internal import Plain
+from core import Instance
 
 
 def search(repositoryName: str):
@@ -21,3 +26,10 @@ Jump: %s""" % (
         data["license"] if data["license"] is None else data["license"]["spdx_id"],
         data["updated_at"], data["html_url"])
     return result
+
+bcc = Instance.bcc() 
+
+@bcc.receiver("GroupMessage")
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+    if message.asDisplay().lower().startswith("github"):
+        await app.sendGroupMessage(group, MessageChain.create([Plain(search(message.asDisplay().replace(' ','')[6:]))]))
