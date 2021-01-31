@@ -134,3 +134,4 @@ bot.py
 push.sh
 src/
 config.py
+.idea/
