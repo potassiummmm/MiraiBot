@@ -6,12 +6,14 @@ from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from core import Instance
 
+
 def makeChoice(*paras):
     random.seed(datetime.datetime.now())
     return paras[random.randint(0, len(paras) - 1)]
 
 
-bcc = Instance.bcc() 
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):

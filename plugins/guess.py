@@ -6,6 +6,7 @@ from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from core import Instance
 
+
 def guess(text: str):
     url = "https://lab.magiconch.com/api/nbnhhsh/guess"
     data = {'text': text}
@@ -25,9 +26,10 @@ def guess(text: str):
     return result
 
 
-bcc = Instance.bcc() 
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().lower().startswith("guess"):
-        await app.sendGroupMessage(group, MessageChain.create([Plain(guess(message.asDisplay().replace(' ','')[5:]))]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain(guess(message.asDisplay().replace(' ', '')[5:]))]))

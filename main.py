@@ -1,18 +1,17 @@
 import core
 from pathlib import Path
 from graia.application import Session
-
+from config import BOT_ACCOUNT, BOT_HOST, AUTHKEY
 
 if __name__ == "__main__":
     core.init(Session(
-        host = "http://localhost:8081",
-        authKey = "testauthkey",
-        account = 1521138307,
-        websocket = True,
-        debug_flag = True
-        )
+        host=BOT_HOST,
+        authKey=AUTHKEY,
+        account=BOT_ACCOUNT,
+        websocket=True
     )
-    core.load_plugins(Path("plugins"),active_groups=[])
+    )
+    core.load_plugins(Path("plugins"))
     app = core.Instance.app()
     while True:
         try:

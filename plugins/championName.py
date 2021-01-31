@@ -99,7 +99,7 @@ def convert(nickName: str):
         return "kaisa"
     elif nickName == "滑板鞋" or nickName == "复仇之矛":
         return "kalista"
-    elif nickName == "卡尔玛" or nickName =="扇子妈":
+    elif nickName == "卡尔玛" or nickName == "扇子妈":
         return "karma"
     elif nickName == "死歌":
         return "karthus"
@@ -303,4 +303,3 @@ def convert(nickName: str):
         return "zyra"
     else:
         return nickName
-

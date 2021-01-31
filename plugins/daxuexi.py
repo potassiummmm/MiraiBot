@@ -6,7 +6,6 @@ from graia.scheduler.timers import every_custom_minutes
 from core import Instance
 
 
-
 def get_newest_url():
     url = 'http://news.cyol.com/node_67071.htm'
     response = requests.get(url, verify=False)
@@ -33,8 +32,9 @@ def get_formatted_result():
     result = get_title_text() + "开始啦!还不学的都是懒狗\n" + get_newest_url()
     return result
 
+
 app = Instance.app()
-sche = Instance.sche() 
+sche = Instance.sche()
 
 daxuexi_newest_title = get_title_text()
 
@@ -42,10 +42,9 @@ daxuexi_newest_title = get_title_text()
 @sche.schedule(every_custom_minutes(10))
 async def daxuexi_scheduler():
     global daxuexi_newest_title
-    if(daxuexi_newest_title != get_title_text()):
+    if daxuexi_newest_title != get_title_text():
         result = get_formatted_result()
         daxuexi_newest_title = get_title_text
         group_list = {855840079, 434499605, 546091207}
         for i in group_list:
             await app.sendGroupMessage(i, MessageChain.create([Plain(result)]))
-

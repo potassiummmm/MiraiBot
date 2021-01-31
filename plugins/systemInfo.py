@@ -10,7 +10,9 @@ def getSystemInfo():
     result = subprocess.getoutput("neofetch --stdout")
     return result.strip('\n')
 
-bcc = Instance.bcc() 
+
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):

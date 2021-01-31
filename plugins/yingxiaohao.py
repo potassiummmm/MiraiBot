@@ -17,11 +17,11 @@ def getText(keyword1: str, keyword2: str, keyword3: str):
            "欢迎在评论区告诉小编一起讨论哦！".replace("kw1", keyword1).replace("kw2", keyword2).replace("kw3", keyword3)
 
 
-bcc = Instance.bcc() 
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
     if message.asDisplay().startswith("营销号"):
         msg = message.asDisplay().split(' ')
         await app.sendGroupMessage(group, MessageChain.create([Plain(getText(msg[1], msg[2], msg[3]))]))
-

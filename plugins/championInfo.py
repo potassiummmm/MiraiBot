@@ -1,10 +1,10 @@
 from graia.application.message.elements.internal import Image
-from graia.application.message.elements.internal import Image_UnsafeBytes
 import requests
 from bs4 import BeautifulSoup
 import re
 from io import BytesIO
 from PIL import Image as Img
+
 
 def getChampionRunes(championName: str, location: str):
     if location.lower() == "top" or location == "上单" or location == "上路":

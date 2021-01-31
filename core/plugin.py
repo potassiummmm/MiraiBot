@@ -8,10 +8,11 @@ plugin_dir_setting = set()
 class Plugin:
     __slots__ = ('module', 'name', 'usage')
 
-    def __init__(self, module, name = None, usage = None):
+    def __init__(self, module, name=None, usage=None):
         self.module = module
         self.name = name
         self.usage = usage
+
 
 def load_plugin(module_name: str) -> bool:
     try:
@@ -24,30 +25,17 @@ def load_plugin(module_name: str) -> bool:
         print(e)
         return False
 
-class Plugin_dir:
-    __slots__ = ('dir_name', 'active_groups', 'negative_groups',
-        'active_members','negative_members')
 
-    def __init__(self, dir_name, active_groups, negative_groups,
-        active_members,negative_members):
+class PluginDir:
+    __slots__ = 'dir_name'
+
+    def __init__(self, dir_name):
         self.dir_name = dir_name
-        self.active_groups = active_groups
-        self.negative_groups = negative_groups
-        self.active_members = active_members
-        self.negative_members = negative_members
 
 
-def load_plugins(plugin_dir: Path,
-    active_groups: list = [],
-    negative_groups: list = [],
-    active_members: list = [],
-    negative_members: list = []
-    ) -> int:
+def load_plugins(plugin_dir: Path) -> int:
     count = 0
-    plugin_dir_setting.add(Plugin_dir(
-        '.'.join(plugin_dir.parts), 
-        active_groups, negative_groups, 
-        active_members,negative_members))
+    plugin_dir_setting.add(PluginDir('.'.join(plugin_dir.parts)))
     for path in plugin_dir.iterdir():
         if path.name.startswith('_'):
             continue

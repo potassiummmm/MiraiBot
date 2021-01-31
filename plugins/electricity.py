@@ -32,10 +32,10 @@ async def main(data):
             text = await resp.text()
         # print(text)
         form = getForm(text)
-        
-        for k,v in data.items():
-          await updateForm(s, form, **{k:v})
-        
+
+        for k, v in data.items():
+            await updateForm(s, form, **{k: v})
+
         form.update({
             'radio': 'usedR',
             'ImageButton1.x': 51,
@@ -44,12 +44,13 @@ async def main(data):
         async with s.post(url, data=form, allow_redirects=False) as resp:
             # print(await resp.text())
             # print(resp.cookies)
-            c = resp.cookies # nm怎么Set-Cookie用不了
+            c = resp.cookies  # nm怎么Set-Cookie用不了
 
-        async with s.get(url+'/usedRecord1.aspx', cookies=c) as resp:
+        async with s.get(url + '/usedRecord1.aspx', cookies=c) as resp:
             text = await resp.text()
             # print(text)
             return float(re.findall(r'剩余电量.+?(\d+\.?\d*)', text)[0])
+
 
 data = {
     'drlouming': '9',

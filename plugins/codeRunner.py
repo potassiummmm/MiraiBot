@@ -6,7 +6,6 @@ from graia.application.message.elements.internal import Plain
 from core import Instance
 
 
-
 async def run(languageChoice, code, input_=None, compilerArgs=None) -> str:
     """
     :param languageChoice: Java=4 Python=5 C(gcc)=6 C++(gcc)=7 Javascript=17 Python3=24 Node.js=23
@@ -28,10 +27,11 @@ async def run(languageChoice, code, input_=None, compilerArgs=None) -> str:
         return data_json["Result"][:-1]
 
 
-bcc = Instance.bcc() 
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
-async def code_runner(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+async def code_runner(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().lower().startswith("c++") and len(message.asDisplay()) > 4:
         result = await run(7, message.asDisplay()[4:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
@@ -44,12 +44,10 @@ async def code_runner(app: GraiaMiraiApplication, group: Group, message: Message
         if message.asDisplay().lower().startswith("javascript") and len(message.asDisplay()) > 11:
             result = await run(17, message.asDisplay()[11:])
             await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
-        else:        
+        else:
             result = await run(4, message.asDisplay()[5:])
             await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
 
     if message.asDisplay().lower().startswith("nodejs") and len(message.asDisplay()) > 7:
         result = await run(23, message.asDisplay()[7:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
-
-

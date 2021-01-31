@@ -5,8 +5,9 @@ import asyncio
 from html import unescape
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
-from graia.scheduler import crontabify
+from graia.scheduler.timers import crontabify
 from core import Instance
+from config import LEETCODE_ENABLED_GROUPS
 
 
 def htmlToPlainText(html) -> str:
@@ -88,11 +89,14 @@ def getDailyQuestion():
     content = getQuestionContent(questionTitleSlug, "Zh")
     return htmlToPlainText(content)[:-1]
 
+
 sche = Instance.sche()
 app = Instance.app()
+
 
 @sche.schedule(crontabify("0 0 * * *"))
 async def leetcode_everyday_question_scheduler():
     await asyncio.sleep(1)
-    await app.sendGroupMessage(1067920415, MessageChain.create([Plain(getDailyQuestion())]))
-
+    result = getDailyQuestion()
+    for g in LEETCODE_ENABLED_GROUPS:
+        await app.sendGroupMessage(g, MessageChain.create([Plain(result)]))

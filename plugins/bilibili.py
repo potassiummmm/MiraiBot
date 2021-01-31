@@ -1,11 +1,11 @@
 import aiohttp
 import json
-import  time
+import time
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
-from graia.scheduler import GraiaScheduler
 from graia.scheduler.timers import every_custom_seconds
 from core import Instance
+
 
 async def getUserInfoJson(uuid: int) -> dict:
     url = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=%d&offset_dynamic_id=0" % uuid
@@ -32,13 +32,14 @@ async def getLatestVideoInfo(uuid: int) -> str:
 app = Instance.app()
 sche = Instance.sche()
 
+
 @sche.schedule(every_custom_seconds(5))
 async def bilibili_subscribe_scheduler():
     ltt_newest_timestamp = await getLatestVideoTimestamp(12434430)
     van_newest_timestamp = await getLatestVideoTimestamp(23604445)
-    if (time.time() - ltt_newest_timestamp < 5):
+    if time.time() - ltt_newest_timestamp < 5:
         result = await getLatestVideoInfo(12434430)
         await app.sendGroupMessage(546091207, MessageChain.create([Plain(result)]))
-    if (time.time() - van_newest_timestamp < 5):
+    if time.time() - van_newest_timestamp < 5:
         result = await getLatestVideoInfo(23604445)
         await app.sendGroupMessage(434499605, MessageChain.create([Plain(result)]))

@@ -33,7 +33,8 @@ tags: %s""" % (data_json['data'][0]['pid'], data_json['data'][0]['title'], data_
         return [result, data_json['data'][0]['url']]
 
 
-bcc = Instance.bcc() 
+bcc = Instance.bcc()
+
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
@@ -50,7 +51,7 @@ async def group_message_listener(app: GraiaMiraiApplication, group: Group, messa
 
     if message.asDisplay() == "可以色图" and member.id == ADMIN_QQ:
         SETU_ENABLED_GROUPS.add(group.id)
-        await app.sendGroupMessage(group, MessageChain.create([Plain("开启青壮年模式")])) 
+        await app.sendGroupMessage(group, MessageChain.create([Plain("开启青壮年模式")]))
 
     if message.asDisplay() == "禁止色图" and member.id == ADMIN_QQ:
         try:
@@ -60,4 +61,5 @@ async def group_message_listener(app: GraiaMiraiApplication, group: Group, messa
         await app.sendGroupMessage(group, MessageChain.create([Plain("开启青少年模式")]))
 
     if message.asDisplay().endswith("二次元"):
-        await app.sendGroupMessage(group, MessageChain.create([Image.fromNetworkAddress("https://www.fantasyzone.cc/api/tu?type=pc")]))
+        await app.sendGroupMessage(group, MessageChain.create(
+            [Image.fromNetworkAddress("https://www.fantasyzone.cc/api/tu?type=pc")]))
