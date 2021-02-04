@@ -1,10 +1,7 @@
+from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from core import Instance
 import requests
 import json
-from graia.application import GraiaMiraiApplication
-from graia.application.group import Group, Member
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
-from core import Instance
 
 
 def guess(text: str):
@@ -30,6 +27,11 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
-    if message.asDisplay().lower().startswith("guess"):
-        await app.sendGroupMessage(group, MessageChain.create([Plain(guess(message.asDisplay().replace(' ', '')[5:]))]))
+async def group_message_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain):
+    if message.asDisplay().lower().startswith("guess") and len(
+            message.asDisplay().split(' ')) == 2:
+        await app.sendGroupMessage(
+            group,
+            MessageChain.create(
+                [Plain(guess(message.asDisplay().replace(' ', '')[5:]))]))

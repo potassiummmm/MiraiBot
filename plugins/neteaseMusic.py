@@ -1,10 +1,7 @@
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
+from core import Instance
 import aiohttp
 import json
-from graia.application import GraiaMiraiApplication
-from graia.application.group import Group
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
-from core import Instance
 
 
 async def get_song(keyword: str) -> str:
@@ -37,7 +34,8 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain):
     if message.asDisplay().startswith("点歌"):
         result = await get_song(message.asDisplay().replace(' ', '')[2:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))

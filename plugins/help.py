@@ -1,8 +1,4 @@
-from graia.application import GraiaMiraiApplication
-from graia.application.event.messages import GroupMessage
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
-from graia.application.group import Group, Member
+from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group, Member
 from core import Instance
 
 help_text = """

@@ -1,9 +1,6 @@
+from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
 import requests
 from bs4 import BeautifulSoup
-from graia.application import GraiaMiraiApplication
-from graia.application.group import Group, Member
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
 from core import Instance
 import plugins.championName as championName
 import plugins.championInfo as championInfo
@@ -16,7 +13,8 @@ def opgg(location: str):
         location = "JUNGLE"
     elif location.lower() == "mid" or location == "中单" or location == "中路":
         location = "MID"
-    elif location.lower() == "ad" or location.lower() == "adc" or location == "下路":
+    elif location.lower() == "ad" or location.lower(
+    ) == "adc" or location == "下路":
         location = "ADC"
     elif location.lower() == "sup" or location == "辅助":
         location = "SUPPORT"
@@ -40,11 +38,18 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def opgg_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+async def opgg_listener(app: GraiaMiraiApplication, group: Group,
+                        message: MessageChain):
     if message.asDisplay().lower().startswith("lol"):
-        await app.sendGroupMessage(group, MessageChain.create([Plain(opgg(message.asDisplay().replace(' ', '')[3:]))]))
+        await app.sendGroupMessage(
+            group,
+            MessageChain.create(
+                [Plain(opgg(message.asDisplay().replace(' ', '')[3:]))]))
 
     if message.asDisplay().endswith("符文"):
         msg = message.asDisplay().split(' ')
-        await app.sendGroupMessage(group, MessageChain.create(
-            championInfo.getChampionRunes(championName.convert(msg[0]), msg[1])))
+        await app.sendGroupMessage(
+            group,
+            MessageChain.create(
+                championInfo.getChampionRunes(championName.convert(msg[0]),
+                                              msg[1])))

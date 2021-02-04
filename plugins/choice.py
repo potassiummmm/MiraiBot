@@ -1,9 +1,6 @@
+from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
 import random
 import datetime
-from graia.application import GraiaMiraiApplication
-from graia.application.group import Group, Member
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
 from core import Instance
 
 
@@ -16,10 +13,12 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain, member: Member):
     if message.asDisplay().startswith("选择"):
         if message.asDisplay().find(' ') == -1:
-            await app.sendGroupMessage(group, MessageChain.create([Plain("请输入空格分割的选项")]))
+            await app.sendGroupMessage(
+                group, MessageChain.create([Plain("请输入空格分割的选项")]))
         else:
             msg = message.split(' ')
             await app.sendGroupMessage(group, makeChoice(*msg[1:]))

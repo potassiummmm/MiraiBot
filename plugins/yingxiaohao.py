@@ -1,7 +1,4 @@
-from graia.application import GraiaMiraiApplication
-from graia.application.group import Group, Member
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
+from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
 from core import Instance
 
 
@@ -21,7 +18,10 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain, member: Member):
     if message.asDisplay().startswith("营销号"):
         msg = message.asDisplay().split(' ')
-        await app.sendGroupMessage(group, MessageChain.create([Plain(getText(msg[1], msg[2], msg[3]))]))
+        await app.sendGroupMessage(
+            group,
+            MessageChain.create([Plain(getText(msg[1], msg[2], msg[3]))]))

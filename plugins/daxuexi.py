@@ -1,8 +1,7 @@
+from graia.application.entry import MessageChain, Plain
+from graia.scheduler.timers import every_custom_minutes
 import requests
 from lxml import etree
-from graia.application.message.chain import MessageChain
-from graia.application.message.elements.internal import Plain
-from graia.scheduler.timers import every_custom_minutes
 from core import Instance
 
 
@@ -11,8 +10,8 @@ def get_newest_url():
     response = requests.get(url, verify=False)
     html = etree.HTML(response.text)
     newest_url = html.xpath(
-        '/html/body/div[@class="mianbody"]/dl[@class="listMM"]/dd[@class="picB"]/ul[@class="movie-list"]/li[1]/a/@href')[
-        0]
+        '/html/body/div[@class="mianbody"]/dl[@class="listMM"]/dd[@class="picB"]/ul[@class="movie-list"]/li[1]/a/@href'
+    )[0]
 
     return newest_url
 
