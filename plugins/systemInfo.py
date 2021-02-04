@@ -15,6 +15,8 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain, member: Member):
     if message.asDisplay() == "系统信息":
-        await app.sendGroupMessage(group, MessageChain.create([Plain(getSystemInfo())]))
+        await app.sendGroupMessage(
+            group, MessageChain.create([Plain(getSystemInfo())]))

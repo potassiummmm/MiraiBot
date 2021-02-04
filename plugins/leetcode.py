@@ -3,6 +3,8 @@ import requests
 import json
 import asyncio
 from html import unescape
+from graia.application import GraiaMiraiApplication
+from graia.application.group import Group
 from graia.application.message.chain import MessageChain
 from graia.application.message.elements.internal import Plain
 from graia.scheduler.timers import crontabify
@@ -40,17 +42,24 @@ def getQuestionContent(questionTitleSlug, language):
         "sec-fetch-dest": "empty",
         "sec-fetch-mode": "cors",
         "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36",
+        "user-agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36",
         "x-definition-name": "question",
         "x-operation-name": "questionData",
         "x-timezone": "Asia/Shanghai"
     }
     payload = {
-        "operationName": "questionData",
-        "variables": {"titleSlug": "%s" % questionTitleSlug},
-        "query": "query questionData($titleSlug: String!) {\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    boundTopicId\n    title\n    titleSlug\n    content\n    translatedTitle\n    translatedContent\n    isPaidOnly\n    difficulty\n    likes\n    dislikes\n    isLiked\n    similarQuestions\n    contributors {\n      username\n      profileUrl\n      avatarUrl\n      __typename\n    }\n    langToValidPlayground\n    topicTags {\n      name\n      slug\n      translatedName\n      __typename\n    }\n    companyTagStats\n    codeSnippets {\n      lang\n      langSlug\n      code\n      __typename\n    }\n    stats\n    hints\n    solution {\n      id\n      canSeeDetail\n      __typename\n    }\n    status\n    sampleTestCase\n    metaData\n    judgerAvailable\n    judgeType\n    mysqlSchemas\n    enableRunCode\n    envInfo\n    book {\n      id\n      bookName\n      pressName\n      source\n      shortDescription\n      fullDescription\n      bookImgUrl\n      pressImgUrl\n      productUrl\n      __typename\n    }\n    isSubscribed\n    isDailyQuestion\n    dailyRecordStatus\n    editorType\n    ugcQuestionId\n    style\n    __typename\n  }\n}\n"
+        "operationName":
+        "questionData",
+        "variables": {
+            "titleSlug": "%s" % questionTitleSlug
+        },
+        "query":
+        "query questionData($titleSlug: String!) {\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    boundTopicId\n    title\n    titleSlug\n    content\n    translatedTitle\n    translatedContent\n    isPaidOnly\n    difficulty\n    likes\n    dislikes\n    isLiked\n    similarQuestions\n    contributors {\n      username\n      profileUrl\n      avatarUrl\n      __typename\n    }\n    langToValidPlayground\n    topicTags {\n      name\n      slug\n      translatedName\n      __typename\n    }\n    companyTagStats\n    codeSnippets {\n      lang\n      langSlug\n      code\n      __typename\n    }\n    stats\n    hints\n    solution {\n      id\n      canSeeDetail\n      __typename\n    }\n    status\n    sampleTestCase\n    metaData\n    judgerAvailable\n    judgeType\n    mysqlSchemas\n    enableRunCode\n    envInfo\n    book {\n      id\n      bookName\n      pressName\n      source\n      shortDescription\n      fullDescription\n      bookImgUrl\n      pressImgUrl\n      productUrl\n      __typename\n    }\n    isSubscribed\n    isDailyQuestion\n    dailyRecordStatus\n    editorType\n    ugcQuestionId\n    style\n    __typename\n  }\n}\n"
     }
-    dataJson = requests.post(url=url, headers=headers, data=json.dumps(payload)).json()
+    dataJson = requests.post(url=url,
+                             headers=headers,
+                             data=json.dumps(payload)).json()
     if language == "En":
         return dataJson["data"]["question"]["content"]
     elif language == "Zh":
@@ -62,41 +71,70 @@ def getQuestionContent(questionTitleSlug, language):
 def getDailyQuestionJson():
     url = "https://leetcode-cn.com/graphql/"
     headers = {
-        "accept": "*/*",
-        "accept-encoding": "gzip, deflate, br",
-        "accept-language": "zh-CN,zh;q=0.9",
-        "content-length": "302",
-        "content-type": "application/json",
-        "origin": "https://leetcode-cn.com",
-        "referer": "https://leetcode-cn.com/problemset/all/",
-        "sec-fetch-dest": "empty",
-        "sec-fetch-mode": "cors",
-        "sec-fetch-site": "same-origin",
-        "user-agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
+        "accept":
+        "*/*",
+        "accept-encoding":
+        "gzip, deflate, br",
+        "accept-language":
+        "zh-CN,zh;q=0.9",
+        "content-length":
+        "302",
+        "content-type":
+        "application/json",
+        "origin":
+        "https://leetcode-cn.com",
+        "referer":
+        "https://leetcode-cn.com/problemset/all/",
+        "sec-fetch-dest":
+        "empty",
+        "sec-fetch-mode":
+        "cors",
+        "sec-fetch-site":
+        "same-origin",
+        "user-agent":
+        "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.135 Safari/537.36"
     }
     payload = {
-        "operationName": "questionOfToday",
+        "operationName":
+        "questionOfToday",
         "variables": {},
-        "query": "query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId,\n      questionTitleSlug,\n      __typename\n    }\n    lastSubmission {\n      id,\n      __typename,\n    }\n    date,\n    userStatus,\n    __typename\n  }\n}\n"
+        "query":
+        "query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId,\n      questionTitleSlug,\n      __typename\n    }\n    lastSubmission {\n      id,\n      __typename,\n    }\n    date,\n    userStatus,\n    __typename\n  }\n}\n"
     }
-    dataJson = requests.post(url=url, headers=headers, data=json.dumps(payload)).json()
+    dataJson = requests.post(url=url,
+                             headers=headers,
+                             data=json.dumps(payload)).json()
     return dataJson
 
 
 def getDailyQuestion():
     dailyQuestionData = getDailyQuestionJson()
-    questionTitleSlug = dailyQuestionData["data"]["todayRecord"][0]["question"]["questionTitleSlug"]
+    questionTitleSlug = dailyQuestionData["data"]["todayRecord"][0][
+        "question"]["questionTitleSlug"]
     content = getQuestionContent(questionTitleSlug, "Zh")
     return htmlToPlainText(content)[:-1]
 
 
 sche = Instance.sche()
 app = Instance.app()
+bcc = Instance.bcc()
 
 
 @sche.schedule(crontabify("0 0 * * *"))
 async def leetcode_everyday_question_scheduler():
     await asyncio.sleep(1)
     result = getDailyQuestion()
-    for g in LEETCODE_ENABLED_GROUPS:
-        await app.sendGroupMessage(g, MessageChain.create([Plain(result)]))
+    for group in LEETCODE_ENABLED_GROUPS:
+        await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+
+@bcc.receiver("GroupMessage")
+async def leetcode_auth_listener(app: GraiaMiraiApplication, group: Group,
+                                 message: MessageChain):
+    if message.asDisplay().lower() == "leetcode on":
+        LEETCODE_ENABLED_GROUPS.add(group.id)
+    elif message.asDisplay().lower() == "leetcode off":
+        try:
+            LEETCODE_ENABLED_GROUPS.remove(group.id)
+        except KeyError as e:
+            print(e)
