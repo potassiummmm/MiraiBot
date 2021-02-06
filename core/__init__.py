@@ -11,14 +11,8 @@ def init(config_session: Session) -> None:
     loop = asyncio.get_event_loop()
     bcc = Broadcast(loop=loop, debug_flag=True)
     inc = InterruptControl(bcc)
-    app = GraiaMiraiApplication(
-        broadcast=bcc,
-        connect_info=config_session
-    )
-    sche = GraiaScheduler(
-        loop=loop,
-        broadcast=bcc
-    )
+    app = GraiaMiraiApplication(broadcast=bcc, connect_info=config_session)
+    sche = GraiaScheduler(loop=loop, broadcast=bcc)
 
 
 class Instance:

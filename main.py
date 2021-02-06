@@ -11,7 +11,6 @@ if __name__ == "__main__":
                 authKey=AUTHKEY,
                 account=BOT_ACCOUNT,
                 websocket=True))
-    print("init time", time.time() - start)
     core.load_plugins(Path("plugins"))
     print("load time", time.time() - start)
     app = core.Instance.app()

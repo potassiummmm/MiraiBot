@@ -33,7 +33,7 @@ class PluginDir:
         self.dir_name = dir_name
 
 
-def load_plugins(plugin_dir: Path) -> int:
+def load_plugins(plugin_dir: Path):
     count = 0
     plugin_dir_setting.add(PluginDir('.'.join(plugin_dir.parts)))
     for path in plugin_dir.iterdir():
@@ -45,4 +45,4 @@ def load_plugins(plugin_dir: Path) -> int:
             continue
         if load_plugin(f'{".".join(plugin_dir.parts)}.{path.stem}'):
             count += 1
-    return count
+    print(count, "个插件加载成功")

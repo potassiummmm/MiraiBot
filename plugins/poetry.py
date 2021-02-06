@@ -11,8 +11,6 @@ def getPoetry():
     return json_file["content"]
 
 
-print(getPoetry())
-
 bcc = Instance.bcc()
 
 
