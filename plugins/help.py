@@ -1,8 +1,7 @@
 from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group, Member
 from core import Instance
 
-help_text = """
-0  百度+关键词 返回百度搜索结果
+help_text = """0  百度+关键词 返回百度搜索结果
 1  哔哩哔哩 订阅UP主实时推送更新
 2  lol 从op.gg查询英雄数据
 3  选择+选项 随机选择
@@ -15,8 +14,7 @@ help_text = """
 10 诗词/念诗 随机诗词
 11 知乎热榜
 13 色图
-14 系统信息 查看机器运行情况
-"""
+14 系统信息 查看机器运行情况"""
 
 bcc = Instance.bcc()
 
