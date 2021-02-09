@@ -95,3 +95,14 @@ async def bilibili_subscribe_auth_listener(app: GraiaMiraiApplication,
         except ValueError:
             msg = MessageChain.create(Plain("请输入整数uuid"))
             await app.sendGroupMessage(group, msg)
+
+    if message.asDisplay() == "订阅列表":
+        content = "订阅列表:"
+        if len(BILIBILI_SUBSCRIBE_SETTINGS[group.id]) == 0:
+            content = "订阅列表为空"
+        else:
+            for up in BILIBILI_SUBSCRIBE_SETTINGS[group.id]:
+                res = await judgeUuid(up)
+                content = content.join("\n").join(res[1])
+        await app.sendGroupMessage(group,
+                                   MessageChain.create([Plain(content)]))
