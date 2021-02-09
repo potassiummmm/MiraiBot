@@ -1,8 +1,8 @@
 from collections import defaultdict
 
-BOT_ACCOUNT: int = 1521138307
-BOT_HOST: str = "http://localhost:8081"
-AUTHKEY: str = "testauthkey"
+BOT_ACCOUNT: int = 0
+BOT_HOST: str = ""
+AUTHKEY: str = ""
 MYSQL_HOST: str = ""
 MYSQL_PORT: str = ""
 MYSQL_USER: str = ""
