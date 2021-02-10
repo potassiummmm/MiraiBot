@@ -5,6 +5,15 @@ from core import Instance
 import aiohttp
 import asyncio
 
+code_info = {
+    -1: "内部错误",
+    0: "成功",
+    401: "APIKEY不存在或被封禁",
+    403: "由于不规范的操作而被拒绝调用",
+    404: "找不到符合关键字的色图",
+    429: "达到调用额度限制"
+}
+
 
 async def getInfoList(r_18=0, keyword="") -> list:
     """
@@ -17,7 +26,7 @@ async def getInfoList(r_18=0, keyword="") -> list:
         async with session.get(url=url, params=params) as resp:
             data_json = await resp.json()
     if data_json['code'] != 0:
-        return ["涩图额度用完了", ""]
+        return [code_info[data_json['code']], ""]
     else:
         result = """pid：%s
 title: %s

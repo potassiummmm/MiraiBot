@@ -1,10 +1,10 @@
 from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group
 from graia.scheduler.timers import every_custom_seconds
 from config import BILIBILI_SUBSCRIBE_SETTINGS
+from core import Instance
 import aiohttp
 import json
 import time
-from core import Instance
 
 
 async def getUserInfoJson(uuid: int) -> dict:
@@ -76,7 +76,7 @@ async def bilibili_subscribe_auth_listener(app: GraiaMiraiApplication,
                     msg.plus(MessageChain.create([Plain(" 订阅成功!")]))
             await app.sendGroupMessage(group, msg)
         except ValueError:
-            msg = MessageChain.create(Plain("请输入整数uuid"))
+            msg = MessageChain.create([Plain("请输入整数uuid")])
             await app.sendGroupMessage(group, msg)
 
     if message.asDisplay().startswith("取消订阅") and len(
@@ -93,7 +93,7 @@ async def bilibili_subscribe_auth_listener(app: GraiaMiraiApplication,
                     msg.plus(MessageChain.create([Plain("未订阅 无法取消")]))
             await app.sendGroupMessage(group, msg)
         except ValueError:
-            msg = MessageChain.create(Plain("请输入整数uuid"))
+            msg = MessageChain.create([Plain("请输入整数uuid")])
             await app.sendGroupMessage(group, msg)
 
     if message.asDisplay() == "订阅列表":
@@ -103,6 +103,6 @@ async def bilibili_subscribe_auth_listener(app: GraiaMiraiApplication,
         else:
             for up in BILIBILI_SUBSCRIBE_SETTINGS[group.id]:
                 res = await judgeUuid(up)
-                content = content.join("\n").join(res[1])
+                content += "\n" + res[1]
         await app.sendGroupMessage(group,
                                    MessageChain.create([Plain(content)]))
