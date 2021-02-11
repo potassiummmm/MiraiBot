@@ -130,8 +130,14 @@ async def leetcode_auth_listener(app: GraiaMiraiApplication, group: Group,
                                  message: MessageChain):
     if message.asDisplay().lower() == "leetcode on":
         LEETCODE_ENABLED_GROUPS.add(group.id)
+        await app.sendGroupMessage(
+            group, MessageChain.create([Plain("已开启LeetCode每日一题推送")]))
     elif message.asDisplay().lower() == "leetcode off":
         try:
             LEETCODE_ENABLED_GROUPS.remove(group.id)
+            await app.sendGroupMessage(
+                group, MessageChain.create([Plain("已关闭LeetCode每日一题推送")]))
         except KeyError as e:
+            await app.sendGroupMessage(
+                group, MessageChain.create([Plain("本群未开启LeetCode每日一题推送!")]))
             print(e)

@@ -1,7 +1,7 @@
 from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Member, Group
-import requests
 from bs4 import BeautifulSoup
 from core import Instance
+import requests
 
 
 def baidu(string: str) -> str:
