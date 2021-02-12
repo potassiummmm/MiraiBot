@@ -14,3 +14,4 @@ SETU_ENABLED_GROUPS: set = set()
 ADMIN_QQ: int = 0
 LEETCODE_ENABLED_GROUPS: set = set()
 BILIBILI_SUBSCRIBE_SETTINGS: dict = defaultdict(set)
+STEAM_API_KEY: str = ""
