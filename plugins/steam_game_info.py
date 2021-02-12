@@ -6,16 +6,17 @@ import aiohttp
 import asyncio
 
 
-def parse(text) -> str:
+def parse(text) -> tuple:
     res = etree.HTML(text)
     try:
         return res.xpath(
-            '//*[@id="search_resultsRows"]/a[1]/@data-ds-appid')[0]
+            '//*[@id="search_resultsRows"]/a[1]/@data-ds-appid')[0], res.xpath(
+                '//*[@id="search_resultsRows"]/a[1]/div[2]/div[1]/span')
     except IndexError:
-        return ""
+        return "", ""
 
 
-async def get_search_info(keyword: str) -> str:
+async def get_search_info(keyword: str) -> tuple:
     url = "https://store.steampowered.com/search/?term=%s&l=schinese" % keyword
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
@@ -51,7 +52,9 @@ async def get_lowest_price(plain: str) -> int:
 
 
 async def get_game_info(keyword: str) -> str:
-    id = await get_search_info(keyword)
+    info_tuple = await get_search_info(keyword)
+    id = info_tuple[0]
+    name = info_tuple[1]
     if id == "":
         return "没有匹配的搜索结果"
     else:
@@ -62,7 +65,7 @@ async def get_game_info(keyword: str) -> str:
 原价:%d
 现价:%d
 折扣:-%d%%
-史低:%d""" % (keyword, current_price_list['price_old'],
+史低:%d""" % (name, current_price_list['price_old'],
             current_price_list['price_new'], current_price_list['price_cut'],
             lowest_price)
 
