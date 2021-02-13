@@ -2,8 +2,8 @@ from graia.application.entry import GraiaMiraiApplication, Group, Member, Messag
 import requests
 from bs4 import BeautifulSoup
 from core import Instance
-import plugins.championName as championName
-import plugins.championInfo as championInfo
+import plugins.champion_name as championName
+import plugins.champion_info as championInfo
 
 
 def opgg(location: str):
