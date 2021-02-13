@@ -7,3 +7,11 @@
 ```
 python3 main.py
 ```
+## 插件说明
+|  插件      |    配置       |  url   	|
+| :--------: | :----------:  | :------: |
+|    setu    |    SETU_API_KEY          |      [Lolicon](https://api.lolicon.app/#/)|
+|    steam_game_info    |    STEAM_API_KEY          | [ITAD](https://itad.docs.apiary.io/#)       |
+
+## 鸣谢
+感谢Mamoe Technologies、GraiaProject提供的优秀项目

@@ -64,12 +64,13 @@ async def get_lowest_price(plain: str) -> int:
 
 async def get_game_info(keyword: str) -> str:
     id = keyword
-    name = await get_name_by_id(id)
+    name = ""
     if not str.isdigit(keyword):
-        id = keyword
         info_tuple = await get_search_info(keyword)
         id = info_tuple[0]
         name = info_tuple[1]
+    else:
+        name = await get_name_by_id(id)
     if id == "" or name == "":
         return "没有匹配的搜索结果"
     else:
