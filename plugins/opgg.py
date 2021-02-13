@@ -1,9 +1,9 @@
 from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
-import requests
-from bs4 import BeautifulSoup
-from core import Instance
 import plugins.champion_name as championName
 import plugins.champion_info as championInfo
+from bs4 import BeautifulSoup
+from core import Instance
+import requests
 
 
 def opgg(location: str):
@@ -40,13 +40,15 @@ bcc = Instance.bcc()
 @bcc.receiver("GroupMessage")
 async def opgg_listener(app: GraiaMiraiApplication, group: Group,
                         message: MessageChain):
-    if message.asDisplay().lower().startswith("lol"):
+    if message.asDisplay().lower().startswith("lol") and len(
+            message.asDisplay().split(' ')) == 2:
         await app.sendGroupMessage(
             group,
             MessageChain.create(
                 [Plain(opgg(message.asDisplay().replace(' ', '')[3:]))]))
 
-    if message.asDisplay().endswith("符文"):
+    if message.asDisplay().endswith("符文") and len(
+            message.asDisplay().split(' ')) == 2:
         msg = message.asDisplay().split(' ')
         await app.sendGroupMessage(
             group,

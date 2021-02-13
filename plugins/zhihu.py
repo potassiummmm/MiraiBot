@@ -26,6 +26,6 @@ bcc = Instance.bcc()
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group,
                                  message: MessageChain, member: Member):
-    if message.asDisplay().startswith("知乎热榜"):
+    if message.asDisplay() == "知乎热榜":
         await app.sendGroupMessage(
             group, MessageChain.create([Plain(getZhihuHotLists())]))
