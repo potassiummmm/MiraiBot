@@ -51,7 +51,7 @@ async def bilibili_subscribe_scheduler():
     for group in BILIBILI_SUBSCRIBE_SETTINGS:
         for up in BILIBILI_SUBSCRIBE_SETTINGS[group]:
             latest_timestamp = await getLatestVideoTimestamp(up)
-            if time.time() - latest_timestamp < 5:
+            if time.time() - latest_timestamp < 20:
                 result = await getLatestVideoInfo(up)
                 await app.sendGroupMessage(
                     group, MessageChain.create([Plain(result)]))
