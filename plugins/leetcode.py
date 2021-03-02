@@ -58,9 +58,13 @@ def getQuestionContent(questionTitleSlug, language):
                              headers=headers,
                              data=json.dumps(payload)).json()
     if language == "En":
-        return dataJson["data"]["question"]["content"]
+        return dataJson["data"]["question"]["questionId"] + dataJson["data"][
+            "question"]["title"] + '\n' + dataJson["data"]["question"][
+                "content"]
     elif language == "Zh":
-        return dataJson["data"]["question"]["translatedContent"]
+        return dataJson["data"]["question"]["questionId"] + dataJson["data"][
+            "question"]["translatedTitle"] + '\n' + dataJson["data"][
+                "question"]["translatedContent"]
     else:
         return None
 
