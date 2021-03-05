@@ -5,7 +5,7 @@ from core import Instance
 
 async def run(languageChoice, code, input_=None, compilerArgs=None) -> str:
     """
-    :param languageChoice: Java=4 Python=5 C(gcc)=6 C++(gcc)=7 Javascript=17 Python3=24 Node.js=23
+    :param languageChoice: Java=4 Python=5 C(gcc)=6 C++(gcc)=7 Javascript=17 Python3=24 Node.js=23 Go=20
     :param code: 代码
     :param input_: 输入
     :param compilerArgs:
@@ -33,19 +33,19 @@ bcc = Instance.bcc()
 @bcc.receiver("GroupMessage")
 async def code_runner(app: GraiaMiraiApplication, group: Group,
                       message: MessageChain):
-    if message.asDisplay().lower().startswith("c++") and len(
+    if message.asDisplay().lower().startswith("c++\n") and len(
             message.asDisplay()) > 4:
         result = await run(7, message.asDisplay()[4:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
 
-    if message.asDisplay().lower().startswith("python") and len(
+    if message.asDisplay().lower().startswith("python\n") and len(
             message.asDisplay()) > 7:
         result = await run(24, message.asDisplay()[7:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
 
-    if message.asDisplay().lower().startswith("java") and len(
+    if message.asDisplay().lower().startswith("java\n") and len(
             message.asDisplay()) > 5:
-        if message.asDisplay().lower().startswith("javascript") and len(
+        if message.asDisplay().lower().startswith("javascript\n") and len(
                 message.asDisplay()) > 11:
             result = await run(17, message.asDisplay()[11:])
             await app.sendGroupMessage(group,
@@ -55,7 +55,12 @@ async def code_runner(app: GraiaMiraiApplication, group: Group,
             await app.sendGroupMessage(group,
                                        MessageChain.create([Plain(result)]))
 
-    if message.asDisplay().lower().startswith("nodejs") and len(
+    if message.asDisplay().lower().startswith("nodejs\n") and len(
             message.asDisplay()) > 7:
         result = await run(23, message.asDisplay()[7:])
+        await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
+
+    if message.asDisplay().lower().startswith("go\n") and len(
+            message.asDisplay()) > 3:
+        result = await run(20, message.asDisplay()[3:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
