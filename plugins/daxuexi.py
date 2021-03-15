@@ -43,7 +43,7 @@ async def daxuexi_scheduler():
     global daxuexi_newest_title
     if daxuexi_newest_title != get_title_text():
         result = get_formatted_result()
-        daxuexi_newest_title = get_title_text
+        daxuexi_newest_title = get_title_text()
         group_list = {855840079, 434499605, 546091207}
         for i in group_list:
             await app.sendGroupMessage(i, MessageChain.create([Plain(result)]))
