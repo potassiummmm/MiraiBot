@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 from core import Instance
 import requests
 import json
@@ -29,7 +29,7 @@ bcc = Instance.bcc()
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+                                 message: MessageChain):
     if message.asDisplay().lower().startswith("github") and len(
             message.asDisplay().split(' ')) == 2:
         await app.sendGroupMessage(

@@ -16,7 +16,7 @@ bcc = Instance.bcc()
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+                                 message: MessageChain):
     if message.asDisplay() == "念诗" or message.asDisplay() == "诗词":
         await app.sendGroupMessage(group,
                                    MessageChain.create([Plain(getPoetry())]))

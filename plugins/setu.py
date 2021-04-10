@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, GroupMessage, MessageChain, Image, Plain, At
+from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Image, Plain, At
 from graia.application.interrupts import GroupMessageInterrupt
 from config import SETU_API_KEY, SETU_ENABLED_GROUPS, ADMIN_QQ
 from core import Instance

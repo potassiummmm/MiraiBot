@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 import random
 import datetime
 from core import Instance
@@ -14,7 +14,7 @@ bcc = Instance.bcc()
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+                                 message: MessageChain):
     if message.asDisplay().startswith("选择"):
         if message.asDisplay().find(' ') == -1:
             await app.sendGroupMessage(

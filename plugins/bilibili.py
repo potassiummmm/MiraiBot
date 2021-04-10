@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group
+from graia.application.entry import GraiaMiraiApplication, MessageChain, Plain, Group
 from graia.scheduler.timers import every_custom_seconds
 from config import BILIBILI_SUBSCRIBE_SETTINGS
 from core import Instance

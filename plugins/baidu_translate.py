@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group
+from graia.application.entry import GraiaMiraiApplication, MessageChain, Plain, Group
 from hashlib import md5
 from config import BAIDU_TRANSLATE_APP_ID, BAIDU_TRANSLATE_SECRET_KEY
 from core import Instance

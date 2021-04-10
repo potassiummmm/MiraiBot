@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Member, Group
+from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group
 from bs4 import BeautifulSoup
 from core import Instance
 import requests

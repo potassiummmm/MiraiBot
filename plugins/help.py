@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, GroupMessage, MessageChain, Plain, Group, Member
+from graia.application.entry import GraiaMiraiApplication, MessageChain, Plain, Group
 from core import Instance
 
 help_text = """0  百度+关键词 返回百度搜索结果
