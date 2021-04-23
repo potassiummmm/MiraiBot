@@ -43,22 +43,21 @@ inc = Instance.inc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain,
+                                 member: Member):
     if message.asDisplay().startswith("色图"):
-        await app.sendGroupMessage(
-            group, MessageChain.create([At(member.id),
-                                        Plain("是否R18? 1 or 0")]))
+        await app.sendGroupMessage(group,
+                                   MessageChain.create([At(member.id),
+                                                        Plain("是否R18? 1 or 0")]))
         res = await inc.wait(
-            GroupMessageInterrupt(
-                group,
-                member,
-                custom_judgement=lambda x: x.messageChain.asDisplay(
-                ) == "0" or x.messageChain.asDisplay() == "1"))
+            GroupMessageInterrupt(group,
+                                  member,
+                                  custom_judgement=lambda x: x.messageChain.asDisplay() == "0" or x.
+                                  messageChain.asDisplay() == "1"))
         command = res.messageChain.asDisplay()
-        await app.sendGroupMessage(
-            group, MessageChain.create([At(member.id),
-                                        Plain("请输入关键词 0表示随机")]))
+        await app.sendGroupMessage(group,
+                                   MessageChain.create([At(member.id),
+                                                        Plain("请输入关键词 0表示随机")]))
         res = await inc.wait(GroupMessageInterrupt(
             group,
             member,
@@ -68,35 +67,27 @@ async def group_message_listener(app: GraiaMiraiApplication, group: Group,
             keyword = ""
         if group.id in SETU_ENABLED_GROUPS:
             setu_list = await getInfoList((command == "1") + 0, keyword)
-            await app.sendGroupMessage(
-                group, MessageChain.create([Plain(setu_list[0])]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain(setu_list[0])]))
             bot_message = await app.sendGroupMessage(
-                group,
-                MessageChain.create(
-                    [Image.fromNetworkAddress(url=setu_list[1])]))
+                group, MessageChain.create([Image.fromNetworkAddress(url=setu_list[1])]))
             await asyncio.sleep(6)
             await app.revokeMessage(bot_message.messageId)
         else:
-            await app.sendGroupMessage(group,
-                                       MessageChain.create([Plain("别冲了")]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain("别冲了")]))
 
     if message.asDisplay() == "可以色图" and member.id == ADMIN_QQ:
         SETU_ENABLED_GROUPS.add(group.id)
-        await app.sendGroupMessage(group,
-                                   MessageChain.create([Plain("开启青壮年模式")]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain("开启青壮年模式")]))
 
     if message.asDisplay() == "禁止色图" and member.id == ADMIN_QQ:
         try:
             SETU_ENABLED_GROUPS.remove(group.id)
         except KeyError:
             pass
-        await app.sendGroupMessage(group,
-                                   MessageChain.create([Plain("开启青少年模式")]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain("开启青少年模式")]))
 
     if message.asDisplay().endswith("二次元"):
         await app.sendGroupMessage(
             group,
-            MessageChain.create([
-                Image.fromNetworkAddress(
-                    "https://www.fantasyzone.cc/api/tu?type=pc")
-            ]))
+            MessageChain.create(
+                [Image.fromNetworkAddress("https://www.fantasyzone.cc/api/tu?type=pc")]))
