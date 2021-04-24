@@ -23,8 +23,7 @@ def baidu(string: str) -> str:
         a = soup.find(id=str(i))
         b = a.find('em')
         if b is not None:
-            result_list.append(
-                b.parent.text.replace('\n', '').replace(' ', ''))
+            result_list.append(b.parent.text.replace('\n', '').replace(' ', ''))
     for i in range(0, len(result_list)):
         result += str(i + 1) + '.' + result_list[i] + '\n'
     return result[:-1]
@@ -34,11 +33,7 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver(GroupMessage)
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
-    if message.asDisplay().startswith("百度") and len(
-            message.asDisplay().split(' ')) == 2:
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+    if message.asDisplay().startswith("百度") and len(message.asDisplay().split(' ')) == 2:
         await app.sendGroupMessage(
-            group,
-            MessageChain.create(
-                [Plain(baidu(message.asDisplay().replace(' ', '')[2:]))]))
+            group, MessageChain.create([Plain(baidu(message.asDisplay().replace(' ', '')[2:]))]))

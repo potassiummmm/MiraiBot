@@ -27,11 +27,7 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
-    if message.asDisplay().lower().startswith("guess") and len(
-            message.asDisplay().split(' ')) == 2:
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+    if message.asDisplay().lower().startswith("guess") and len(message.asDisplay().split(' ')) == 2:
         await app.sendGroupMessage(
-            group,
-            MessageChain.create(
-                [Plain(guess(message.asDisplay().replace(' ', '')[5:]))]))
+            group, MessageChain.create([Plain(guess(message.asDisplay().replace(' ', '')[5:]))]))

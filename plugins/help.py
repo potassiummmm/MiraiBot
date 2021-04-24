@@ -22,8 +22,6 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def help_listener(app: GraiaMiraiApplication, group: Group,
-                        message: MessageChain):
+async def help_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().endswith("help"):
-        await app.sendGroupMessage(group,
-                                   MessageChain.create([Plain(help_text)]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain(help_text)]))

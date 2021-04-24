@@ -11,8 +11,7 @@ bcc = Instance.bcc()
 @bcc.receiver("GroupMessage")
 async def baidu_translator_listener(app: GraiaMiraiApplication, group: Group,
                                     message: MessageChain):
-    if message.asDisplay().startswith("translate") and len(
-            message.asDisplay().split(' ')) == 2:
+    if message.asDisplay().startswith("translate") and len(message.asDisplay().split(' ')) == 2:
         query = message.asDisplay().split(' ')[1]
         res = BAIDU_TRANSLATE_APP_ID + query + "1926" + BAIDU_TRANSLATE_SECRET_KEY
         sign = md5(res.encode('utf8')).hexdigest()
@@ -22,6 +21,4 @@ async def baidu_translator_listener(app: GraiaMiraiApplication, group: Group,
             async with session.get(url) as resp:
                 data_json = await resp.json()
                 await app.sendGroupMessage(
-                    group,
-                    MessageChain.create(
-                        [Plain(data_json["trans_result"][0]["dst"])]))
+                    group, MessageChain.create([Plain(data_json["trans_result"][0]["dst"])]))

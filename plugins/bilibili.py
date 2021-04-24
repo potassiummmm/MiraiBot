@@ -44,13 +44,13 @@ sche = Instance.sche()
 bcc = Instance.bcc()
 
 
-@sche.schedule(every_custom_seconds(10))
+@sche.schedule(every_custom_seconds(20))
 async def bilibili_subscribe_scheduler():
     for group in BILIBILI_SUBSCRIBE_SETTINGS:
         for up in BILIBILI_SUBSCRIBE_SETTINGS[group]:
             print(f"{group}-{up}")
             latest_timestamp = await getLatestVideoTimestamp(up)
-            if time.time() - latest_timestamp < 20:
+            if time.time() - latest_timestamp < 21:
                 result = await getLatestVideoInfo(up)
                 await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))
 

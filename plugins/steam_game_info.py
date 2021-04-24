@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 from core import Instance
 from config import STEAM_API_KEY
 from lxml import etree
@@ -8,10 +8,8 @@ import aiohttp
 def parse(text) -> tuple:
     res = etree.HTML(text)
     try:
-        return res.xpath(
-            '//*[@id="search_resultsRows"]/a[1]/@data-ds-appid')[0], res.xpath(
-                '//*[@id="search_resultsRows"]/a[1]/div[2]/div[1]/span/text()'
-            )[0]
+        return res.xpath('//*[@id="search_resultsRows"]/a[1]/@data-ds-appid')[0], res.xpath(
+            '//*[@id="search_resultsRows"]/a[1]/div[2]/div[1]/span/text()')[0]
     except IndexError:
         return "", ""
 
@@ -81,19 +79,16 @@ async def get_game_info(keyword: str) -> str:
 原价:%d
 现价:%d
 折扣:-%d%%
-史低:%d""" % (name, current_price_dict['price_old'],
-            current_price_dict['price_new'], current_price_dict['price_cut'],
-            lowest_price)
+史低:%d""" % (name, current_price_dict['price_old'], current_price_dict['price_new'],
+            current_price_dict['price_cut'], lowest_price)
 
 
 bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
-    if message.asDisplay().startswith("steam") and len(
-            message.asDisplay().split(' ')):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+    if message.asDisplay().startswith("steam") and len(message.asDisplay().split(' ')):
         msg = message.asDisplay().split(' ')
         res = await get_game_info(msg[1])
         await app.sendGroupMessage(group, MessageChain.create([Plain(res)]))

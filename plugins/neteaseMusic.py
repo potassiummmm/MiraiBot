@@ -34,8 +34,7 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().startswith("点歌"):
         result = await get_song(message.asDisplay().replace(' ', '')[2:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))

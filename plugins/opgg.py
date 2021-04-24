@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 import plugins.champion_name as championName
 import plugins.champion_info as championInfo
 from bs4 import BeautifulSoup
@@ -13,8 +13,7 @@ def opgg(location: str):
         location = "JUNGLE"
     elif location.lower() == "mid" or location == "中单" or location == "中路":
         location = "MID"
-    elif location.lower() == "ad" or location.lower(
-    ) == "adc" or location == "下路":
+    elif location.lower() == "ad" or location.lower() == "adc" or location == "下路":
         location = "ADC"
     elif location.lower() == "sup" or location == "辅助":
         location = "SUPPORT"
@@ -38,20 +37,14 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def opgg_listener(app: GraiaMiraiApplication, group: Group,
-                        message: MessageChain):
-    if message.asDisplay().lower().startswith("lol") and len(
-            message.asDisplay().split(' ')) == 2:
+async def opgg_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
+    if message.asDisplay().lower().startswith("lol") and len(message.asDisplay().split(' ')) == 2:
         await app.sendGroupMessage(
-            group,
-            MessageChain.create(
-                [Plain(opgg(message.asDisplay().replace(' ', '')[3:]))]))
+            group, MessageChain.create([Plain(opgg(message.asDisplay().replace(' ', '')[3:]))]))
 
-    if message.asDisplay().endswith("符文") and len(
-            message.asDisplay().split(' ')) == 2:
+    if message.asDisplay().endswith("符文") and len(message.asDisplay().split(' ')) == 2:
         msg = message.asDisplay().split(' ')
         await app.sendGroupMessage(
             group,
-            MessageChain.create(
-                championInfo.getChampionRunes(championName.convert(msg[0]),
-                                              msg[1])))
+            MessageChain.create(championInfo.getChampionRunes(championName.convert(msg[0]),
+                                                              msg[1])))

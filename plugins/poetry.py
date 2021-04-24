@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 from core import Instance
 import requests
 import json
@@ -15,8 +15,6 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay() == "念诗" or message.asDisplay() == "诗词":
-        await app.sendGroupMessage(group,
-                                   MessageChain.create([Plain(getPoetry())]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain(getPoetry())]))

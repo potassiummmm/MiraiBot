@@ -13,8 +13,7 @@ def getChampionRunes(championName: str, location: str):
         location = "jungle"
     elif location.lower() == "mid" or location == "中单" or location == "中路":
         location = "mid"
-    elif location.lower() == "ad" or location.lower(
-    ) == "adc" or location == "下路":
+    elif location.lower() == "ad" or location.lower() == "adc" or location == "下路":
         location = "adc"
     elif location.lower() == "sup" or location == "辅助":
         location = "support"

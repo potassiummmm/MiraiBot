@@ -54,17 +54,13 @@ def getQuestionContent(questionTitleSlug, language):
         "query":
         "query questionData($titleSlug: String!) {\n  question(titleSlug: $titleSlug) {\n    questionId\n    questionFrontendId\n    boundTopicId\n    title\n    titleSlug\n    content\n    translatedTitle\n    translatedContent\n    isPaidOnly\n    difficulty\n    likes\n    dislikes\n    isLiked\n    similarQuestions\n    contributors {\n      username\n      profileUrl\n      avatarUrl\n      __typename\n    }\n    langToValidPlayground\n    topicTags {\n      name\n      slug\n      translatedName\n      __typename\n    }\n    companyTagStats\n    codeSnippets {\n      lang\n      langSlug\n      code\n      __typename\n    }\n    stats\n    hints\n    solution {\n      id\n      canSeeDetail\n      __typename\n    }\n    status\n    sampleTestCase\n    metaData\n    judgerAvailable\n    judgeType\n    mysqlSchemas\n    enableRunCode\n    envInfo\n    book {\n      id\n      bookName\n      pressName\n      source\n      shortDescription\n      fullDescription\n      bookImgUrl\n      pressImgUrl\n      productUrl\n      __typename\n    }\n    isSubscribed\n    isDailyQuestion\n    dailyRecordStatus\n    editorType\n    ugcQuestionId\n    style\n    __typename\n  }\n}\n"
     }
-    dataJson = requests.post(url=url,
-                             headers=headers,
-                             data=json.dumps(payload)).json()
+    dataJson = requests.post(url=url, headers=headers, data=json.dumps(payload)).json()
     if language == "En":
-        return dataJson["data"]["question"]["questionId"] + dataJson["data"][
-            "question"]["title"] + '\n' + dataJson["data"]["question"][
-                "content"]
+        return dataJson["data"]["question"]["questionId"] + dataJson["data"]["question"][
+            "title"] + '\n' + dataJson["data"]["question"]["content"]
     elif language == "Zh":
-        return dataJson["data"]["question"]["questionId"] + dataJson["data"][
-            "question"]["translatedTitle"] + '\n' + dataJson["data"][
-                "question"]["translatedContent"]
+        return dataJson["data"]["question"]["questionId"] + dataJson["data"]["question"][
+            "translatedTitle"] + '\n' + dataJson["data"]["question"]["translatedContent"]
     else:
         return None
 
@@ -102,16 +98,13 @@ def getDailyQuestionJson():
         "query":
         "query questionOfToday {\n  todayRecord {\n    question {\n      questionFrontendId,\n      questionTitleSlug,\n      __typename\n    }\n    lastSubmission {\n      id,\n      __typename,\n    }\n    date,\n    userStatus,\n    __typename\n  }\n}\n"
     }
-    dataJson = requests.post(url=url,
-                             headers=headers,
-                             data=json.dumps(payload)).json()
+    dataJson = requests.post(url=url, headers=headers, data=json.dumps(payload)).json()
     return dataJson
 
 
 def getDailyQuestion():
     dailyQuestionData = getDailyQuestionJson()
-    questionTitleSlug = dailyQuestionData["data"]["todayRecord"][0][
-        "question"]["questionTitleSlug"]
+    questionTitleSlug = dailyQuestionData["data"]["todayRecord"][0]["question"]["questionTitleSlug"]
     content = getQuestionContent(questionTitleSlug, "Zh")
     return htmlToPlainText(content)[:-1]
 
@@ -130,18 +123,14 @@ async def leetcode_everyday_question_scheduler():
 
 
 @bcc.receiver("GroupMessage")
-async def leetcode_auth_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
+async def leetcode_auth_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().lower() == "leetcode on":
         LEETCODE_ENABLED_GROUPS.add(group.id)
-        await app.sendGroupMessage(
-            group, MessageChain.create([Plain("已开启LeetCode每日一题推送")]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain("已开启LeetCode每日一题推送")]))
     elif message.asDisplay().lower() == "leetcode off":
         try:
             LEETCODE_ENABLED_GROUPS.remove(group.id)
-            await app.sendGroupMessage(
-                group, MessageChain.create([Plain("已关闭LeetCode每日一题推送")]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain("已关闭LeetCode每日一题推送")]))
         except KeyError as e:
-            await app.sendGroupMessage(
-                group, MessageChain.create([Plain("本群未开启LeetCode每日一题推送!")]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain("本群未开启LeetCode每日一题推送!")]))
             print(e)

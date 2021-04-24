@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 import requests
 import json
 from core import Instance
@@ -14,8 +14,7 @@ def getZhihuHotLists():
     result = json.loads(req.content)
     text = "知乎热榜:\n"
     for i in range(0, 9):
-        text += str(i +
-                    1) + '   ' + result["data"][i]["target"]["title"] + '\n'
+        text += str(i + 1) + '   ' + result["data"][i]["target"]["title"] + '\n'
     text += str(10) + '  ' + result["data"][9]["target"]["title"]
     return text
 
@@ -24,8 +23,6 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay() == "知乎热榜":
-        await app.sendGroupMessage(
-            group, MessageChain.create([Plain(getZhihuHotLists())]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain(getZhihuHotLists())]))

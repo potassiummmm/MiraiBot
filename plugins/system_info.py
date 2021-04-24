@@ -1,4 +1,4 @@
-from graia.application.entry import GraiaMiraiApplication, Group, Member, MessageChain, Plain
+from graia.application.entry import GraiaMiraiApplication, Group, MessageChain, Plain
 from core import Instance
 import subprocess
 
@@ -12,8 +12,6 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay() == "系统信息":
-        await app.sendGroupMessage(
-            group, MessageChain.create([Plain(getSystemInfo())]))
+        await app.sendGroupMessage(group, MessageChain.create([Plain(getSystemInfo())]))

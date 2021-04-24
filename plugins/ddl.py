@@ -19,8 +19,8 @@ def addDDL(user_type: str, user_id: int, ddl_date: str, ddl_info: str):
 def deleteMemberDDL(memberid: int, ddlInfo: str) -> str:
     db = pymysql.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DDL_DB)
     cursor = db.cursor()
-    sql = "DELETE FROM " + MYSQL_DDL_TABLE + " WHERE user_id = %d and ddl_info = '%s'" % (
-        memberid, ddlInfo)
+    sql = "DELETE FROM " + MYSQL_DDL_TABLE + " WHERE user_id = %d and ddl_info = '%s'" % (memberid,
+                                                                                          ddlInfo)
     cursor.execute(sql)
     db.commit()
     db.close()
@@ -44,8 +44,7 @@ def ddlBroadcast(memberid: int, days: int) -> str:
     result = "ddl "
     db = pymysql.connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DDL_DB)
     cursor = db.cursor()
-    next_date = (datetime.datetime.now() +
-                 datetime.timedelta(days=days)).strftime("%Y-%m-%d")
+    next_date = (datetime.datetime.now() + datetime.timedelta(days=days)).strftime("%Y-%m-%d")
     sql = "select * from " + MYSQL_DDL_TABLE + " where ddl_date = '%s' and user_id = %d" % (
         next_date, memberid)
     cursor.execute(sql)
@@ -67,8 +66,8 @@ async def ddl_week_scheduler():
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain, member: Member):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain,
+                                 member: Member):
     if message.asDisplay().lower().startswith("ddl"):
         msg_list = message.asDisplay().split(' ')
         if msg_list[1] == 'add':
@@ -78,9 +77,7 @@ async def group_message_listener(app: GraiaMiraiApplication, group: Group,
                 addDDL("member", member.id, msg_list[2], msg_list[3])
         elif msg_list[1] == 'help':
             await app.sendGroupMessage(
-                group,
-                MessageChain.create(
-                    [Plain("ddl+add+(g)+date+info添加ddl,g表示group")]))
+                group, MessageChain.create([Plain("ddl+add+(g)+date+info添加ddl,g表示group")]))
         elif msg_list[1] == 'rm':
             if msg_list[2] == 'g':
                 deleteMemberDDL(group.id, msg_list[3])
@@ -92,5 +89,4 @@ async def group_message_listener(app: GraiaMiraiApplication, group: Group,
                 result = getMemberDDL(group.id)
             else:
                 result = getMemberDDL(member.id)
-            await app.sendGroupMessage(group,
-                                       MessageChain.create([Plain(result)]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain(result)]))

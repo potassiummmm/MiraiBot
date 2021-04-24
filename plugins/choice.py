@@ -13,12 +13,10 @@ bcc = Instance.bcc()
 
 
 @bcc.receiver("GroupMessage")
-async def group_message_listener(app: GraiaMiraiApplication, group: Group,
-                                 message: MessageChain):
+async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
     if message.asDisplay().startswith("选择"):
         if message.asDisplay().find(' ') == -1:
-            await app.sendGroupMessage(
-                group, MessageChain.create([Plain("请输入空格分割的选项")]))
+            await app.sendGroupMessage(group, MessageChain.create([Plain("请输入空格分割的选项")]))
         else:
             msg = message.split(' ')
             await app.sendGroupMessage(group, makeChoice(*msg[1:]))
