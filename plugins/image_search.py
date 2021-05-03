@@ -5,6 +5,7 @@ from graia.application.event.messages import Group, Member
 from graia.application.message.elements.internal import Plain, At, Image
 from graia.application.interrupts import GroupMessageInterrupt
 from core import Instance
+from config import SAUCENAO_COOKIE
 
 
 async def search_image(img: Image) -> MessageChain:
@@ -21,22 +22,14 @@ async def search_image(img: Image) -> MessageChain:
     headers = {
         "User-Agent":
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36",
-        "Sec-Fetch-Dest":
-        "document",
-        "Sec-Fetch-Mode":
-        "navigate",
-        "Sec-Fetch-Site":
-        "none",
-        "Sec-Fetch-User":
-        "?1",
-        "Referer":
-        url,
-        "Origin":
-        "https://saucenao.com",
-        "Host":
-        "saucenao.com",
-        "cookie":
-        'MarketGidStorage=%7B%220%22%3A%7B%7D%2C%22C732867%22%3A%7B%22page%22%3A2%2C%22time%22%3A1620024230914%7D%7D; __cfduid=d8f63b850489d87dc8a4ff91c0b509dd21619773286; __gads=ID=d4583e770c5d270b:T=1619773367:S=ALNI_MavaK_FQw3z-NSR-Y84EGGnqmLwkg; _ga=GA1.2.1649656836.1619773287; _gat=1; _gid=GA1.2.1889824457.1619978486; _im_uid.3929=b.b7b6ef50bfd909c4; _im_vid=01F4H08A9E62YCD8RQCFKE0R13; auth=681ca8f1185fbf892afe53ab901598e83bd54021; token=608f9b8212f1c; user=51519'
+        "Sec-Fetch-Dest": "document",
+        "Sec-Fetch-Mode": "navigate",
+        "Sec-Fetch-Site": "none",
+        "Sec-Fetch-User": "?1",
+        "Referer": url,
+        "Origin": "https://saucenao.com",
+        "Host": "saucenao.com",
+        "cookie": SAUCENAO_COOKIE
     }
 
     async with aiohttp.ClientSession() as session:

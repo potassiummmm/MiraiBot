@@ -48,7 +48,6 @@ bcc = Instance.bcc()
 async def bilibili_subscribe_scheduler():
     for group in BILIBILI_SUBSCRIBE_SETTINGS:
         for up in BILIBILI_SUBSCRIBE_SETTINGS[group]:
-            print(f"{group}-{up}")
             latest_timestamp = await getLatestVideoTimestamp(up)
             if time.time() - latest_timestamp < 21:
                 result = await getLatestVideoInfo(up)
