@@ -39,10 +39,9 @@ def get_daily_question():
 
     no = jsonText.get('questionFrontendId')
     leetcodeTitle = jsonText.get('translatedTitle')
-    level = jsonText.get('difficulty')
     context = jsonText.get('translatedContent')
     context = BeautifulSoup(context, 'html.parser').get_text()
-    result = f"{no}.{leetcodeTitle}\n{url}"
+    result = f"{no}.{leetcodeTitle}\n{context}\n{url}"
     return result
 
 
