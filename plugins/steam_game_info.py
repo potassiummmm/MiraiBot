@@ -52,12 +52,12 @@ async def get_current_price_dict(plain: str) -> dict:
 
 
 async def get_lowest_price(plain: str) -> int:
-    url = "https://api.isthereanydeal.com/v01/game/storelow/?key=%s&plains=%s&country=CN&shops=steam" % (
+    url = "https://api.isthereanydeal.com/v01/game/lowest/?key=%s&plains=%s&country=CN&shops=steam" % (
         STEAM_API_KEY, plain)
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as resp:
             data_json = await resp.json()
-            return data_json['data'][plain][0]['price']
+            return data_json['data'][plain]['price']
 
 
 async def get_game_info(keyword: str) -> str:
