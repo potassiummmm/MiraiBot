@@ -88,7 +88,7 @@ bcc = Instance.bcc()
 
 @bcc.receiver("GroupMessage")
 async def group_message_listener(app: GraiaMiraiApplication, group: Group, message: MessageChain):
-    if message.asDisplay().startswith("steam") and len(message.asDisplay().split(' ')):
-        msg = message.asDisplay().split(' ')
-        res = await get_game_info(msg[1])
+    if message.asDisplay().startswith("steam") and len(message.asDisplay().split(' ')) > 2:
+        msg = message.asDisplay()
+        res = await get_game_info(msg[6:])
         await app.sendGroupMessage(group, MessageChain.create([Plain(res)]))
